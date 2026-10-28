@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: metrik_db
+    restart: always
+    # Naikkan max_connections dari default 100 ke 300
+    # shared_buffers = 25% dari RAM (VPS 4GB → 1GB)
+    # work_mem = memori per operasi sort/hash (300 koneksi × 4MB = max 1.2GB tapi hanya saat dipakai)
+    command: >
+      postgres
+      -c max_connections=300
+      -c shared_buffers=256MB
+      -c work_mem=4MB
+      -c maintenance_work_mem=64MB
+      -c effective_cache_size=1GB
+    environment:
+      POSTGRES_USER: admin_pln
+      POSTGRES_PASSWORD: RahasiaPassword123!
+      POSTGRES_DB: pln_kwh
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: metrik_backend
+    restart: always
+    volumes:
+      - ./backend/uploads:/app/uploads
+    environment:
+      - DATABASE_URL=postgresql://admin_pln:RahasiaPassword123!@db:5432/pln_kwh
+      - SECRET_KEY=kunci-rahasia-production-pln-metrik
+      - FRONTEND_URL=http://localhost
+      - DEBUG=false
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: metrik_frontend
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.palembang.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

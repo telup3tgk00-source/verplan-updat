@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>METRIK Sync</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 15px; 
+            width: 250px; 
+            background-color: #f8f9fa;
+        }
+        h3 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+        }
+        label { 
+            font-size: 12px; 
+            font-weight: bold; 
+            display: block; 
+            margin-top: 10px; 
+            color: #555;
+        }
+        input { 
+            width: 100%; 
+            padding: 6px; 
+            margin-top: 4px; 
+            box-sizing: border-box; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button { 
+            margin-top: 10px; 
+            width: 100%; 
+            padding: 8px; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            font-weight: bold;
+        }
+        #saveBtn {
+            background: #007bff; 
+            color: white; 
+        }
+        #saveBtn:hover { background: #0056b3; }
+        
+        #syncNowBtn {
+            background: #28a745; 
+            color: white; 
+        }
+        #syncNowBtn:hover { background: #218838; }
+        
+        #status { 
+            margin-top: 12px; 
+            font-size: 12px; 
+            text-align: center; 
+            font-weight: bold;
+            min-height: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h3>METRIK Auto-Sync</h3>
+    <label>URL Frontend METRIK:</label>
+    <input type="text" id="metrikUrl" placeholder="https://metrikpln.co.id">
+    
+    <button id="saveBtn">Simpan Pengaturan</button>
+    <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+    
+    <label style="display: flex; align-items: center; cursor: pointer; justify-content: space-between;">
+        <span>Aktifkan Auto-Sync (1 menit)</span>
+        <input type="checkbox" id="autoSyncToggle" style="width: auto; margin: 0; transform: scale(1.2);">
+    </label>
+    
+    <button id="syncNowBtn" style="margin-top: 15px;">Force Sync Sekarang</button>
+    
+    <div id="status"></div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
